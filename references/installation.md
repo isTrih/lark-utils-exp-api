@@ -38,6 +38,21 @@ npm run build
 
 独立二进制包含 Bun runtime，目标机器不需要安装 Bun、Node.js 或 npm。`dist/` 被 Git 忽略，应通过 GitHub/GitLab Release 或内部制品库分发，不要直接提交大文件。
 
+GitHub Release 同时提供 `SHA256SUMS.txt`。下载后先验证哈希，再运行二进制。
+
+macOS：
+
+```sh
+shasum -a 256 -c SHA256SUMS.txt
+```
+
+Windows PowerShell 可计算单个文件哈希，并与 `SHA256SUMS.txt` 对照：
+
+```powershell
+Get-FileHash .\kp-cli-windows-x64.exe -Algorithm SHA256
+Get-Content .\SHA256SUMS.txt
+```
+
 macOS 下载后如丢失执行位：
 
 ```sh
@@ -45,6 +60,10 @@ chmod 755 kp-cli-macos-arm64
 ```
 
 Windows 可把 `kp-cli-windows-x64.exe` 重命名为 `kp-cli.exe` 并放入 `PATH`。
+
+## 自动发布
+
+推送与 `package.json` 版本一致的标签（例如 `v0.1.0`）会触发 GitHub Actions。流水线先执行类型检查和测试，再在原生 macOS ARM、macOS Intel 与 Windows x64 runner 上构建，最终生成哈希清单并创建 Release。版本不一致、测试失败、资产缺失或哈希自检失败时不会发布。
 
 ## 初始化
 
