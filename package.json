@@ -11,10 +11,12 @@
     "build": "bun run scripts/build.ts",
     "check": "tsc --noEmit",
     "test": "bun test",
+    "package:atlas": "bun run scripts/package-atlas-skill.ts",
     "openapi:sync": "bun run src/kp-cli.ts openapi sync --output references"
   },
   "devDependencies": {
     "@types/bun": "^1.2.20",
+    "fflate": "^0.8.3",
     "typescript": "^5.9.2"
   },
   "packageManager": "npm@11.16.0"

@@ -1,5 +1,6 @@
 ---
 name: lark-utils-exp-api
+version: 0.1.0
 description: 使用 kp-cli 查询、调用、调试和维护 Lark Utils Exp 的全部 HTTP API，并以强制只读事务核验生产 PostgreSQL 数据。适用于 API 集成、管理后台、报表指标、工作流、星图登录态、飞书连接器及接口故障排查。
 ---
 
@@ -9,10 +10,11 @@ description: 使用 kp-cli 查询、调用、调试和维护 Lark Utils Exp 的�
 
 ## 开始前
 
-1. 运行 `kp-cli config show` 检查当前 API 地址与初始化状态。输出会隐藏 Token。
-2. 未初始化时运行 `kp-cli init <MUTATION_API_TOKEN>`。更安全的自动化方式是把 Token 写入 stdin 后运行 `kp-cli init --token-stdin`。
-3. 默认生产地址是 `https://autoxingtu.api.ali.trih.top`。只有用户明确指定其他环境时才传 `--api-base`。
-4. 选择接口时先查 [references/api-catalog.md](references/api-catalog.md)；需要精确请求/响应 Schema 时读取 [references/openapi.json](references/openapi.json)。
+1. 先运行 `kp-cli version`。命令不存在时，使用 Node.js 运行本 Skill 的 `scripts/install-kp-cli.mjs`；Node.js 不可用但有 Bun 时改用 `bun scripts/install-kp-cli.mjs`。安装器会识别 macOS ARM、macOS Intel 或 Windows x64，下载与 Skill 版本一致的内部 GitHub Release，并强制校验 `SHA256SUMS.txt`。私有仓库访问使用当前 `gh auth`，也支持 `GH_TOKEN`/`GITHUB_TOKEN`。
+2. 运行 `kp-cli config show` 检查当前 API 地址与初始化状态。输出会隐藏 Token。
+3. `assets/internal-bootstrap.json` 只提供默认生产接口地址，不包含管理令牌。未初始化时，安装器优先读取当前进程的 `MUTATION_API_TOKEN`，最后兼容读取旧版仅本机存在的 `.env`，并通过 stdin 初始化；均不存在时运行 `kp-cli init --token-stdin`。管理令牌不得进入 Skill 包、被 Git 跟踪的文件、脚本、GitHub Release 或二进制。
+4. 默认生产地址是 `https://autoxingtu.api.ali.trih.top`。只有用户明确指定其他环境时才传 `--api-base`。
+5. 选择接口时先查 [references/api-catalog.md](references/api-catalog.md)；需要精确请求/响应 Schema 时读取 [references/openapi.json](references/openapi.json)。
 
 首次安装或分发二进制时读取 [references/installation.md](references/installation.md)。
 

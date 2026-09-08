@@ -1,8 +1,10 @@
 node_modules/
 dist/
+packages/
 .env
 .env.*
 !.env.example
+/assets/internal-bootstrap.json
 *.log
 response*.json
 request*.json

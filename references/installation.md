@@ -2,6 +2,53 @@
 
 仓库使用 npm 管理开发依赖，CLI 源码、测试和编译均使用 Bun。
 
+## Skill 自动安装
+
+Skill 首次使用发现系统中没有 `kp-cli` 时，运行仓库内的跨平台安装器：
+
+```text
+node scripts/install-kp-cli.mjs
+```
+
+如果只有 Bun：
+
+```text
+bun scripts/install-kp-cli.mjs
+```
+
+安装器按当前系统下载与 Skill 版本一致的 GitHub Release，校验 `SHA256SUMS.txt` 后再安装：
+
+- macOS：`~/.local/bin/kp-cli`
+- Windows：`%LOCALAPPDATA%\kp-cli\bin\kp-cli.exe`
+
+内部仓库认证按顺序使用 `GH_TOKEN`、`GITHUB_TOKEN` 或当前 `gh auth`。安装目录需要加入 `PATH`。
+
+`assets/internal-bootstrap.json` 只保存默认生产接口地址。安装器优先读取当前进程的 `MUTATION_API_TOKEN`，最后兼容读取旧版本地 `.env`。存在令牌时，安装成功后会自动通过 stdin 初始化；不存在时只安装，并提示使用 `kp-cli init --token-stdin`。使用 `--no-init` 可以明确只安装、不初始化。
+
+管理令牌不得进入 Skill 包、Git、安装器源码或 kp-cli 二进制。需要免输入初始化时，由公司设备管理、持续集成密钥或密码管理器向安装器进程注入 `MUTATION_API_TOKEN`。
+
+## Atlas SkillHub 内网包
+
+在维护仓库中执行：
+
+```text
+npm run package:atlas
+```
+
+命令只在本地生成：
+
+- `packages/lark-utils-exp-api-atlas-v<版本>.zip`
+- `packages/lark-utils-exp-api-atlas-v<版本>.zip.sha256`
+
+ZIP 以 `SKILL.md` 为根入口，包含运行所需引用、自动安装器以及只含默认接口地址的 `assets/internal-bootstrap.json`。打包前会确认地址使用 HTTPS，并拒绝包含管理令牌的配置。`packages/` 与该内部配置均被 Git 忽略；本地包用于公司内网 Atlas SkillHub。
+
+上传前校验：
+
+```sh
+cd packages
+shasum -a 256 -c lark-utils-exp-api-atlas-v0.1.0.zip.sha256
+```
+
 ## 从源码运行
 
 要求 Bun 1.2+、Node.js 22+、npm 11+：
