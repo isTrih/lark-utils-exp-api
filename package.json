@@ -1,0 +1,21 @@
+{
+  "name": "@koc-project/kp-cli",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "kp-cli": "./src/kp-cli.ts"
+  },
+  "scripts": {
+    "kp-cli": "bun run src/kp-cli.ts",
+    "build": "bun run scripts/build.ts",
+    "check": "tsc --noEmit",
+    "test": "bun test",
+    "openapi:sync": "bun run src/kp-cli.ts openapi sync --output references"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.2.20",
+    "typescript": "^5.9.2"
+  },
+  "packageManager": "npm@11.16.0"
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Lark Utils Exp API"
+  short_description: "查询、调用并维护 Lark Utils Exp 全部 API"
+  default_prompt: "使用 $lark-utils-exp-api 安全查询或调用 Lark Utils Exp API。"
